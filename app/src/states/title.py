@@ -1,8 +1,7 @@
-from pygame.constants import MOUSEBUTTONDOWN, MOUSEWHEEL
 from .state import State
 import pygame
 
-class Title(State):
+class TitleScreen(State):
     """
     Title screen state.
     """
@@ -14,13 +13,10 @@ class Title(State):
 
     def on_event(self, event):
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_v:
-                self.exit_state()
-
-            elif event.key == pygame.K_p:
-                new_state = Title(self.game)
-                new_state.enter_state()
-
+            new_state = self.game.state_dict['Gameplay'](self.game)
+            self.exit_state()
+            new_state.enter_state()
+                
     def render(self, surface):
         surface.fill(pygame.Color("grey50"))
-        self.game.draw_text(surface, f"Game States TITLE {len(self.game.state_stack)}", (0,0,0), 320, 180)
+        self.game.draw_text(surface, f"State TITLE {len(self.game.state_stack)}", (0,0,0), 320, 180)

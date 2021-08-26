@@ -1,5 +1,5 @@
 import pygame
-from src.states.title import Title
+from pathlib import Path
 
 class Game():
         def __init__(self):
@@ -7,6 +7,8 @@ class Game():
             pygame.display.set_caption("My Game")
 
             self.surface = pygame.Surface((640, 360))
+            self.rect = self.surface.get_rect()
+
             self.width, self.height = 960, 540
             self.screen = pygame.display.set_mode((self.width,self.height))
             self.clock = pygame.time.Clock()
@@ -19,8 +21,9 @@ class Game():
             self.running, self.playing = True, True
 
             self.state_stack = []
+            
 
-            self.load_assets() # Not implemented
+            self.load_assets()
             self.load_states()
 
         def run(self):
@@ -29,19 +32,16 @@ class Game():
                 self.update()
                 self.render()
 
-                # Delta time updater
+                # Time updater
+                self.now = pygame.time.get_ticks()
                 self.delta = self.clock.tick(self.fps) * 0.001
-                print(len(self.state_stack))
 
         def check_events(self):
+            self.keys = pygame.key.get_pressed()
             for event in pygame.event.get():
                 self.state_stack[-1].on_event(event)
 
                 if event.type == pygame.QUIT:
-                    self.playing = False
-                    self.running = False
-
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     self.playing = False
                     self.running = False
                     
@@ -63,11 +63,26 @@ class Game():
             surface.blit(text_surface, text_rect)
 
         def load_assets(self):
-            pass
+            # Create pointers to assets folders.
+            SRC_DIR = Path(__file__).parent / "src"
+            self.ASSETS_DIR = SRC_DIR / "assets"
+            self.IMAGES = self.ASSETS_DIR / "images"
 
         def load_states(self):
-            # Starting state
-            self.title_screen = Title(self)
+            from src.states.title import TitleScreen
+            from src.states.gameplay import GamePlay
+            from src.states.menu import MenuScreen
+            from src.states.inventory import InventoryScreen
+
+            self.state_dict = {
+                'Title': TitleScreen,
+                'Gameplay': GamePlay,
+                'Menu': MenuScreen,
+                'Inventory': InventoryScreen,
+            }
+
+            # Set starting state ('Title')
+            self.title_screen = self.state_dict['Title'](self)
             self.state_stack.append(self.title_screen)
 
 
