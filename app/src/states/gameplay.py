@@ -9,23 +9,29 @@ class GamePlay(State):
     def __init__(self, game):
         State.__init__(self, game)
 
-        self.player = Player(self.game.rect.midtop, 300, self.game.IMAGES)
+        self.player = Player(self.game.rect.center, 300, self.game.IMAGES)
 
     def update(self, delta):
         self.player.update(self.game.keys, self.game.rect, delta)
-        self.player.jump(self.game.rect, delta)
 
     def on_event(self, event):
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            new_state = self.game.state_dict['Menu'](self.game)
-            new_state.enter_state()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                new_state = self.game.state_dict['Menu'](self.game)
+                new_state.enter_state()
             
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
-            new_state = self.game.state_dict['Inventory'](self.game)
-            new_state.enter_state()
+            elif event.key == pygame.K_TAB:
+                new_state = self.game.state_dict['Inventory'](self.game)
+                new_state.enter_state()
 
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-            self.player.isJump = True
+            elif event.key == pygame.K_SPACE:
+                    self.player.jump()
+        
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_SPACE:
+                if self.player.is_jumping:
+                    self.player.velocity.y *= .25
+                    self.player.is_jumping = False
 
     def render(self, surface):
         surface.fill(pygame.Color("green"))

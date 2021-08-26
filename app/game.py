@@ -22,7 +22,6 @@ class Game():
 
             self.state_stack = []
             
-
             self.load_assets()
             self.load_states()
 
@@ -34,7 +33,7 @@ class Game():
 
                 # Time updater
                 self.now = pygame.time.get_ticks()
-                self.delta = self.clock.tick(self.fps) * 0.001
+                self.delta = self.clock.tick(self.fps) * 0.001 * self.fps
 
         def check_events(self):
             self.keys = pygame.key.get_pressed()

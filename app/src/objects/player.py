@@ -23,37 +23,25 @@ class Player:
             }
 
         
-        self.isJump = False
-        self.velocity = 8
-        self.mass = 1
+        self.is_jumping = False
+        self.is_grounded = False
+        self.gravity, self.friction = .35, -.12
+        self.position, self.velocity = pygame.math.Vector2(0, 0), pygame.math.Vector2(0, 0)
+        self.acceleration = pygame.math.Vector2(0, self.gravity)
+
 
     def make_image(self):
         """
         Load player image.
         """
-
         image = pygame.image.load(os.path.join(self.assets, 'player_r.png')).convert_alpha()
         return image
     
-    def jump(self, screen_rect, delta):
-        """
-        Make player jump.
-        """
-        if self.isJump:
-            FORCE = (1 / 2) * self.mass * (self.velocity**2)
-            self.true_pos[1] -= FORCE
-
-            self.velocity -= 1
-            if self.velocity < 0:
-                self.mass = -1
-
-            if self.velocity == -9:
-                self.isJump = False
-                self.velocity = 8
-                self.mass = 1
-
-            self.rect.center = self.true_pos
-            self.clamp(screen_rect)
+    def jump(self):
+        if self.is_grounded:
+            self.is_jumping = True
+            self.velocity.y -= 8
+            self.is_grounded = False
 
 
     def update(self, keys, screen_rect, delta):
@@ -62,16 +50,43 @@ class Player:
         Adjustments to position must be multiplied by this delta.
         Set the rect to true_pos once adjusted (automatically converts to int).
         """
+        self.horizontal_movement(keys, screen_rect,delta)
+        self.vertical_movement(delta)
+        
 
-        # Test gravity.
-        self.true_pos[1] += 1 * self.speed * delta
 
-        for key in self.MOVEMENT:
-            if keys[key]:
-                self.true_pos[0] += self.MOVEMENT[key][0] * self.speed * delta
-                self.true_pos[1] += self.MOVEMENT[key][1] * self.speed * delta
-        self.rect.center = self.true_pos
-        self.clamp(screen_rect)
+    def horizontal_movement(self, keys, screen_rect, delta):
+        self.acceleration.x = 0
+
+        if keys[pygame.K_a]:
+            self.acceleration.x -= .3
+        elif keys[pygame.K_d]:
+            self.acceleration.x += .3
+
+        self.acceleration.x += self.velocity.x * self.friction
+        self.velocity.x += self.acceleration.x * delta
+        self.cap_velocity(4)
+        self.position.x += self.velocity.x * delta + (self.acceleration.x * .5) * (delta * delta)
+        self.rect.x = self.position.x
+
+
+    def vertical_movement(self, delta):
+        self.velocity.y += self.acceleration.y * delta
+        if self.velocity.y > 7: 
+            self.velocity.y = 7
+        self.position.y += self.velocity.y * delta + (self.acceleration.y * .5) * (delta * delta)
+
+        if self.position.y >= 320:
+            self.is_grounded = True
+            self.velocity.y = 0
+            self.position.y = 320
+        self.rect.bottom = self.position.y
+
+    def cap_velocity(self, max_vel):
+        self.velocity.x = max(-max_vel, min(self.velocity.x, max_vel))
+        if abs(self.velocity.x) < .01: self.velocity.x = 0 
+
+
 
     def clamp(self, screen_rect):
         """
