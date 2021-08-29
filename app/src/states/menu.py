@@ -17,4 +17,4 @@ class MenuScreen(State):
                 
     def render(self, surface):
         surface.fill(pygame.Color("yellow"))
-        self.game.draw_text(surface, f"State MENU {len(self.game.state_stack)}", (0,0,0), 320, 180)
+        self.game.draw_text(surface, f"State MENU {len(self.game.state_stack)}", (0,0,0), 136, 256)

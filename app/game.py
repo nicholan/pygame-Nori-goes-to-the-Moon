@@ -1,28 +1,30 @@
 import pygame
 from pathlib import Path
+from tools import load_images, load_maps
 
 class Game():
         def __init__(self):
             pygame.init()
             pygame.display.set_caption("My Game")
 
-            self.surface = pygame.Surface((640, 360))
+            self.surface = pygame.Surface((272, 512))
             self.rect = self.surface.get_rect()
 
-            self.width, self.height = 960, 540
+            self.width, self.height = 544, 1024
             self.screen = pygame.display.set_mode((self.width,self.height))
             self.clock = pygame.time.Clock()
-
             self.delta = 0
             self.fps = 60
             self.keys = pygame.key.get_pressed()
-            self.font = pygame.font.SysFont(None, 48)
 
             self.running, self.playing = True, True
-
             self.state_stack = []
             
-            self.load_assets()
+            self.load_asset_dirs()
+
+            self.images_dict = load_images(self.IMAGES)
+            self.maps_dict = load_maps(self.MAPS)
+
             self.load_states()
 
         def run(self):
@@ -54,18 +56,19 @@ class Game():
 
             pygame.display.flip()
 
-
         def draw_text(self, surface, text, color, x, y):
-            text_surface = self.font.render(text, True, color)
+            font = pygame.font.SysFont('arial', 16)
+            text_surface = font.render(text, True, color)
             text_rect = text_surface.get_rect()
             text_rect.center = (x, y)
             surface.blit(text_surface, text_rect)
 
-        def load_assets(self):
+        def load_asset_dirs(self):
             # Create pointers to assets folders.
             SRC_DIR = Path(__file__).parent / "src"
             self.ASSETS_DIR = SRC_DIR / "assets"
             self.IMAGES = self.ASSETS_DIR / "images"
+            self.MAPS = self.ASSETS_DIR / "maps"
 
         def load_states(self):
             from src.states.title import TitleScreen

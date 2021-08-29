@@ -19,4 +19,4 @@ class InventoryScreen(State):
                 
     def render(self, surface):
         surface.fill(pygame.Color("orange"))
-        self.game.draw_text(surface, f"State INVENTORY {len(self.game.state_stack)}", (0,0,0), 320, 180)
+        self.game.draw_text(surface, f"State INVENTORY {len(self.game.state_stack)}", (0,0,0), 136, 256)
