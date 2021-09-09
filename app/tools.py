@@ -2,7 +2,14 @@ import os
 import pygame
 import csv
 
-def load_images(directory, colorkey=(255,0,255), accept=(".png",".jpg",".bmp")):
+def draw_text(surface, text, color, x, y):
+            font = pygame.font.SysFont('arial', 13)
+            text_surface = font.render(text, True, color)
+            text_rect = text_surface.get_rect()
+            text_rect.center = (x, y)
+            surface.blit(text_surface, text_rect)
+
+def load_images(directory, colorkey=(0,0,0), accept=(".png", ".jpg", ".bmp")):
     """
     Load all graphics, convert images accordingly, set colorkey / alpha.
     """
@@ -18,6 +25,7 @@ def load_images(directory, colorkey=(255,0,255), accept=(".png",".jpg",".bmp")):
                 img.set_colorkey(colorkey)
             graphics[name]=img
     return graphics
+
     
 def load_maps(directory, accept=(".csv")):
     """
@@ -25,7 +33,6 @@ def load_maps(directory, accept=(".csv")):
     """
     maps = {}
     for file in os.listdir(directory):
-        print(file, directory)
         name, ext = os.path.splitext(file)
         if ext.lower() in accept:
             map = []
@@ -35,3 +42,18 @@ def load_maps(directory, accept=(".csv")):
                     map.append(list(row))
             maps[name]=map
     return maps
+
+
+def load_sfx(directory, accept=(".wav", ".mp3")):
+    """
+    Create dictionary of sound effects.
+    """
+    sfx_dict = {}
+    for file in os.listdir(directory):
+        name, ext = os.path.splitext(file)
+        if ext.lower() in accept:
+            sfx = pygame.mixer.Sound(os.path.join(directory, file))
+            sfx_dict[name]=sfx
+    return sfx_dict
+
+
