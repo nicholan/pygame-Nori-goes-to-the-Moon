@@ -1,25 +1,23 @@
 # pygame-Nori goes to the Moon
 
-# 2D Platformer.
-
-# Featuring: 
-# 33 levels
-# 4 difficulty settings 
+2D Platformer game; personal game project that I completed 09/2021. Features 33 levels and 4 difficulty settings. 
 
 
-###### CREDITS ######
+## CREDITS
 
-# Music: 
-# Parting of the Ways - Part 1 by Kevin MacLeod
-# Link: https://incompetech.filmmusic.io/song/4195-parting-of-the-ways---part-1
-# License: https://filmmusic.io/standard-license
+### Music: 
+Parting of the Ways - Part 1 by Kevin MacLeod <br/>
+Link: https://incompetech.filmmusic.io/song/4195-parting-of-the-ways---part-1 <br/>
+License: https://filmmusic.io/standard-license
 
-# Level Art:
-# Planets and Asteroids created with Pixel Planet Generator by Deep-Fold ~ https://deep-fold.itch.io/
-# Stars, Nebulas and Clouds created with Space Background Generator by Deep-Fold ~ https://deep-fold.itch.io/
+"Arvaa jysähti" by Pekka
 
-# Character Art:
-# "2D Pixel Art Cat Sprites" by Elthen ~ https://elthen.itch.io/
+### Level Art:
+Planets and Asteroids created with Pixel Planet Generator by Deep-Fold ~ https://deep-fold.itch.io/ <br/>
+Stars, Nebulas and Clouds created with Space Background Generator by Deep-Fold ~ https://deep-fold.itch.io/
 
-# Level 0 Ground & Trees:
-# "Stringstar Fields" by Trixie ~ https://trixelized.itch.io/
+### Character Art:
+"2D Pixel Art Cat Sprites" by Elthen ~ https://elthen.itch.io/
+
+### Level 0 Ground & Trees:
+"Stringstar Fields" by Trixie ~ https://trixelized.itch.io/
