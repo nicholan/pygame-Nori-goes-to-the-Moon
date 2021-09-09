@@ -17,6 +17,7 @@ class SettingsScreen(State):
             Button(self.diff_msg, 120, 130, self.game.sfx_dict),
             Button(self.music_msg, 120, 160, self.game.sfx_dict), 
             Button(self.frame_msg, 120, 190, self.game.sfx_dict),
+            Button(self.stats_msg, 120, 220, self.game.sfx_dict),
             Button('Back', 120, 280, self.game.sfx_dict),
             ]
 
@@ -49,8 +50,12 @@ class SettingsScreen(State):
         if self.buttons[3].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
             self.on_off_frame()
             self.game.sfx_dict['ground'].play()
-
+        
         if self.buttons[4].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+            self.toggle_stats()
+            self.game.sfx_dict['ground'].play()
+
+        if self.buttons[5].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
             self.game.sfx_dict['ground'].play()
             self.game.settings.save_settings()
             self.exit_state()
@@ -68,6 +73,7 @@ class SettingsScreen(State):
         self.diff_msg = 'Difficulty:' + self.diff_list[self.game.settings.difficulty] 
         self.reso_msg = 'Display:' + str(self.game.settings.width) +' * '+ str(self.game.settings.height)
         self.frame_msg = 'Window frame:' + f(self.game.settings.frame)
+        self.stats_msg = 'Game stats:' + f(self.game.settings.stats)
 
     def update_messages(self):
         """
@@ -77,6 +83,7 @@ class SettingsScreen(State):
         self.buttons[1].msg = self.diff_msg
         self.buttons[2].msg = self.music_msg
         self.buttons[3].msg = self.frame_msg
+        self.buttons[4].msg = self.stats_msg
 
     def change_display_scaling(self, mouse_button):
         """
@@ -133,3 +140,10 @@ class SettingsScreen(State):
             self.game.settings.frame = True
 
         self.game.settings.on_off_frame() # Update display window.
+
+
+    def toggle_stats(self):
+        """
+        Toggle stats (level, 'meters') display during gameplay.
+        """
+        self.game.settings.toggle_stats() # Update display window.

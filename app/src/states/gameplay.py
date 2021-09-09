@@ -34,8 +34,9 @@ class GamePlay(State):
         self.game.backgrounds.draw_elements()
         self.game.player.draw(surface)
         self.game.tiles.draw_map(surface)
-        draw_text(surface, f"{MapLevel.level}", (255,255,255), 230, 310) 
-        draw_text(surface, f"{self.meters / 10}", (255,255,255), 30, 310)
+        if self.game.settings.stats:
+            draw_text(surface, f"{MapLevel.level}", (255,255,255), 230, 310) 
+            draw_text(surface, f"{self.meters / 10}", (255,255,255), 30, 310)
         self.fade.draw(surface)
     
     def check_ending(self):

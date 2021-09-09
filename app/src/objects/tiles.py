@@ -16,7 +16,6 @@ class MapLevel():
     """
     This class is used for creating platforms that will be checked for player collision.
     """
-
     level = 0
     transitioning = False # Level transition lock
 

@@ -19,6 +19,7 @@ class Settings():
             self.load_settings()
         except:
             self.frame = True
+            self.stats = False
             self.load_screen()
             self.load_difficulty()
             self.change_music_volume()
@@ -53,6 +54,12 @@ class Settings():
         else:
             self.screen = pygame.display.set_mode((self.width, self.height))
 
+    def toggle_stats(self):
+        if self.stats:
+            self.stats = False
+        else:
+            self.stats = True
+
     def save_settings(self):
         """
         Save user settings to config.json only when user accesses the settings state in game.
@@ -66,7 +73,8 @@ class Settings():
                 'Audio':[{
                     'Music volume': self.volume}],
                 'Game':[{
-                    'Difficulty': self.difficulty}]
+                    'Difficulty': self.difficulty,
+                    'Stats': self.stats}]
             }
 
         with open(os.path.join(Path(__file__).parent, 'config.json'), 'w', encoding='utf-8') as f:
@@ -87,6 +95,7 @@ class Settings():
                 self.volume = i['Music volume']
             for i in data['Game']:
                 self.difficulty = i['Difficulty']
+                self.stats = i['Stats']
 
         self.load_screen(self.resolution_scale)
         self.change_music_volume(self.volume)
