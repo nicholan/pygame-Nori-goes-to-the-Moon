@@ -1,6 +1,9 @@
 # Tiled files
 *.tmx
 
+# Config
+*.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

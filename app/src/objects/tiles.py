@@ -16,7 +16,7 @@ class MapLevel():
     """
     This class is used for creating platforms that will be checked for player collision.
     """
-    level = 0
+    level = 10
     transitioning = False # Level transition lock
 
     def __init__(self, map_dict, images_dict, difficulty):

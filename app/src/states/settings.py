@@ -33,29 +33,29 @@ class SettingsScreen(State):
             self.game.settings.save_settings()
             self.game.sfx_dict['ground'].play()
 
-        if self.buttons[0].hover(self.game.scaled_pos):
+        elif self.buttons[0].hover(self.game.scaled_pos):
             if event.type == pygame.MOUSEBUTTONUP:
                 self.change_display_scaling(event.button)
                 self.game.sfx_dict['ground'].play()
 
-        if self.buttons[1].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+        elif self.buttons[1].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
             self.change_difficulty()
             self.game.sfx_dict['ground'].play()
 
-        if self.buttons[2].hover(self.game.scaled_pos):
+        elif self.buttons[2].hover(self.game.scaled_pos):
             if event.type == pygame.MOUSEBUTTONUP:
                 self.change_vol(event.button)
                 self.game.sfx_dict['ground'].play()
 
-        if self.buttons[3].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+        elif self.buttons[3].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
             self.on_off_frame()
             self.game.sfx_dict['ground'].play()
         
-        if self.buttons[4].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+        elif self.buttons[4].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
             self.toggle_stats()
             self.game.sfx_dict['ground'].play()
 
-        if self.buttons[5].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+        elif self.buttons[5].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
             self.game.sfx_dict['ground'].play()
             self.game.settings.save_settings()
             self.exit_state()

@@ -1,4 +1,4 @@
-# pygame-Nori goes to the Moon
+# Nori goes to the Moon
 
 2D Platformer game; personal game project that I completed 09/2021. Features 33 levels and 4 difficulty settings. 
 

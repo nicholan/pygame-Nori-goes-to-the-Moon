@@ -23,7 +23,11 @@ class TitleScreen(State):
         [button.update(self.game.scaled_pos) for button in self.buttons]
 
     def on_event(self, event):
-        if self.buttons[0].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+        if self.game.backgrounds.moon.rect.collidepoint(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
+            pygame.mixer.music.load(os.path.join(self.game.MUSIC, 'theme2.mp3'))
+            pygame.mixer.music.play(-1)
+
+        elif self.buttons[0].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
             self.game.sfx_dict['chime'].play()
             new_state = self.game.state_dict['Transition'](self.game, 'Gameplay')
             self.exit_state()
