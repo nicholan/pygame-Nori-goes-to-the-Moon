@@ -6,7 +6,7 @@ Only requirements are python 3.9 (may work on older versions), and pygame 2.0.1.
 
 ![norigittt](https://user-images.githubusercontent.com/68992338/132831364-b1df63a1-e673-41eb-a106-618a83fdd7fb.png)
 
-For me this project was practice on working with a state-based game, object oriented programming.  
+For me this project was practice on working with a state-based game and object oriented programming. 
 
 ### Known issues: 
 Moving the game window will have the player fall through platforms.
