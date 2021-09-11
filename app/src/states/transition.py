@@ -4,7 +4,7 @@ import pygame
 
 class TransitionScreen(State):
     """
-    End credits screen state.
+    Transition screen state.
     """
     def __init__(self, game, next_state, fade_color=(0,0,0)):
         State.__init__(self, game)

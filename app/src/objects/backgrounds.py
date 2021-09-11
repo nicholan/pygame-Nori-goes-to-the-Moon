@@ -18,8 +18,8 @@ class Backgrounds:
         self.asteroids = defaultdict(list)
         self.nebulas = defaultdict(list)
 
-        self.trees = self.images_dict['lv_1_front'] # Level 0 trees.
-        self.moon = Moon(self.images_dict['moon']) # Level 32 moon.
+        self.trees = self.images_dict['lv_1_front'] # Level 0 trees.  (+ end screen trees.)
+        self.moon = Moon(self.images_dict['moon']) # Level 32 moon. (also title screen, end screen.)
 
         Asteroid.parse_asteroid_sheet(self.images_dict)
         Planet.parse_planets_sheet(self.images_dict)
@@ -31,10 +31,10 @@ class Backgrounds:
         Create empty lists in the element dicts.
         """
         for i in range(0, 32):
-            self.planets[i] = []
-            self.dust[i] = []
-            self.asteroids[i] = []
-            self.nebulas[i] = []
+            self.planets[i] = pygame.sprite.Group()
+            self.dust[i] = [] # Only one dust img per level.
+            self.asteroids[i] = pygame.sprite.Group()
+            self.nebulas[i] = [] # Only one nebula img per level.
                 
     def init_elements(self):
         self.create_planets()
@@ -85,11 +85,11 @@ class Backgrounds:
             if level > 22:
                 if len(planets) < 2:
                     new_planet = Planet()
-                    self.planets[level].append(new_planet) # Create a new dictionary key if one doesnt already exist.
+                    self.planets[level].add(new_planet) # Create a new dictionary key if one doesnt already exist.
             elif level > 11:
                 if len(planets) < 1:
                     new_planet = Planet()
-                    self.planets[level].append(new_planet)
+                    self.planets[level].add(new_planet)
 
     def create_dust(self, images):
         for level, dust in self.dust.items():
@@ -110,12 +110,12 @@ class Backgrounds:
             if level > 23:
                 if len(asteroid) < 3:
                     new_asteroid = Asteroid()
-                    self.asteroids[level].append(new_asteroid)
+                    self.asteroids[level].add(new_asteroid)
 
             elif level > 19:
                 if len(asteroid) < 1:
                     new_asteroid = Asteroid()
-                    self.asteroids[level].append(new_asteroid)
+                    self.asteroids[level].add(new_asteroid)
 
     def create_nebulas(self, images):
         for level, nebula in self.nebulas.items():
@@ -123,6 +123,16 @@ class Backgrounds:
                 if len(nebula) < 1:
                     new_nebula = Nebula(images, level)
                     self.nebulas[level].append(new_nebula)
+
+                elif Dust.wind_direction > 0 and len(nebula) == 1:
+                    if nebula[0].rect.left > 0:
+                        new_nebula = Nebula(images, level)
+                        self.nebulas[level].append(new_nebula)
+                
+                elif Dust.wind_direction < 0 and len(nebula) == 1:
+                    if nebula[0].rect.right < 240:
+                        new_nebula = Nebula(images, level)
+                        self.nebulas[level].append(new_nebula)
 
 
     def clear_offscreen_elements(self, element_list):
@@ -257,31 +267,33 @@ class Dust(pygame.sprite.Sprite):
             self.image = choice([self.image, pygame.transform.flip(self.image, True, False)])
 
         elif level in (range(1, 6)):
-            self.image = choice([image[Dust.clouds[x]] for x in range(3, 7)]) # White clouds.
+            x = random.randint(3,6)
+            self.image = image[Dust.clouds[x]] # White clouds.
             self.image = self.randomize(self.image)
         
         elif level in (range(6, 11)):
-            self.image = choice([image[Dust.clouds[x]] for x in range(7, 10)]) # Blue clouds.
+            x = random.randint(7,9)
+            self.image = image[Dust.clouds[x]] # Blue clouds.
             self.image = self.randomize(self.image)
         
         elif level in (range(11, 15)):
-            self.image = choice([image[Dust.clouds[x]] for x in range(10, 15)]) # Yellow clouds.
+            x = random.randint(10,14)
+            self.image = image[Dust.clouds[x]] # Yellow clouds.
             self.image = self.randomize(self.image)
         
         elif level in (range(15, 20)):
-            self.image = choice([image[Dust.clouds[x]] for x in range(15, 19)]) # Pink clouds.
+            x = random.randint(15,18)
+            self.image = image[Dust.clouds[x]] # Pink clouds.
             self.image = self.randomize(self.image)
 
-        elif level in (range(20, 25)):
-            self.image = choice([image[Dust.clouds[x]] for x in range(20, 23)]) # Purple clouds.
-            self.image = self.randomize(self.image)
-
-        elif level in (range(25, 28)):
-            self.image = choice([image[Dust.clouds[x]] for x in range(20, 23)]) # Purple clouds. !!!!
+        elif level in (range(20, 28)):
+            x = random.randint(20,22)
+            self.image = image[Dust.clouds[x]] # Purple clouds.
             self.image = self.randomize(self.image)
 
         elif level in (range(28, 32)):
-            self.image = choice([image[Dust.clouds[x]] for x in range(23, 28)]) # Purple clouds.
+            x = random.randint(23,27)
+            self.image = image[Dust.clouds[x]] # Red/fire clouds.
             self.image = self.randomize(self.image)
 
         self.rect = self.image.get_rect()
@@ -340,11 +352,13 @@ class Nebula(pygame.sprite.Sprite):
         self.image = image[Nebula.nebulas[0]] # Placeholder.
 
         if level in (range(24, 28)):
-            self.image = choice([image[Nebula.nebulas[x]] for x in range(0, 3)]) # Choose random purple nebula.
+            x = random.randint(0, 2)
+            self.image = image[Nebula.nebulas[x]] # Choose random purple nebula.
             self.image = self.randomize(self.image)
             
         elif level in (range(28, 32)):
-            self.image = choice([image[Nebula.nebulas[x]] for x in range(3, 7)]) # Choose random fire nebula.
+            x = random.randint(3, 6)
+            self.image = image[Nebula.nebulas[x]] # Choose random fire nebula.
             self.image = self.randomize(self.image)
 
         self.rect = self.image.get_rect()
@@ -400,8 +414,8 @@ class Asteroid(pygame.sprite.Sprite):
         self.speed_x = choice([round(random.uniform(-.05, -.2), 2), 
                                 round(random.uniform(.05, .2), 2)])
 
-        self.speed_y = choice([round(random.uniform(-.05, -.2), 2), 
-                                round(random.uniform(.05, .2), 2)])
+        self.speed_y = choice([round(random.uniform(-.05, -.1), 2), 
+                                round(random.uniform(.05, .1), 2)])
 
         self.y = random.randint(75, 250) # Starting position on y-axis.
         self.speed = self.speed_x
