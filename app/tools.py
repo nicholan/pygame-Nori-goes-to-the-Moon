@@ -44,7 +44,7 @@ def load_maps(directory, accept=(".csv")):
     return maps
 
 
-def load_sfx(directory, accept=(".wav", ".mp3")):
+def load_sfx(directory, accept=(".ogg")):
     """
     Create dictionary of sound effects.
     """
@@ -54,6 +54,7 @@ def load_sfx(directory, accept=(".wav", ".mp3")):
         if ext.lower() in accept:
             sfx = pygame.mixer.Sound(os.path.join(directory, file))
             sfx_dict[name]=sfx
+    print(sfx_dict)
     return sfx_dict
 
 

@@ -15,7 +15,7 @@ class TitleScreen(State):
             Button('Quit', 120, 280, game.sfx_dict),
             ]
 
-        pygame.mixer.music.load(os.path.join(self.game.MUSIC, 'theme.mp3')) # Start theme music at title screen.
+        pygame.mixer.music.load(os.path.join(self.game.MUSIC, 'theme.ogg')) # Start theme music at title screen.
         pygame.mixer.music.play(-1) # Loop
 
     def update(self):
@@ -24,7 +24,7 @@ class TitleScreen(State):
 
     def on_event(self, event):
         if self.game.backgrounds.moon.rect.collidepoint(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
-            pygame.mixer.music.load(os.path.join(self.game.MUSIC, 'theme2.mp3'))
+            pygame.mixer.music.load(os.path.join(self.game.MUSIC, 'theme2.ogg'))
             pygame.mixer.music.play(-1)
 
         elif self.buttons[0].hover(self.game.scaled_pos) and event.type == pygame.MOUSEBUTTONDOWN:
