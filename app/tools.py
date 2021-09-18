@@ -54,7 +54,6 @@ def load_sfx(directory, accept=(".ogg")):
         if ext.lower() in accept:
             sfx = pygame.mixer.Sound(os.path.join(directory, file))
             sfx_dict[name]=sfx
-    print(sfx_dict)
     return sfx_dict
 
 
